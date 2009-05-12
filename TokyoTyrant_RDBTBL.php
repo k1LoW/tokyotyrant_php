@@ -23,8 +23,7 @@
      MIT License
      URL:http://openpear.org/package/Net_TokyoTyrant
   */
-require_once('TokyoTyrant_RDB');
-
+require_once('TokyoTyrant_RDB.php');
 
 class TokyoTyrant_RDBTBL extends TokyoTyrant_RDB{
     /*
