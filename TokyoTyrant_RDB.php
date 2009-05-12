@@ -550,7 +550,7 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x11);
+        $cmd = pack('c*', 0xC8,0x20);
         $sbuf = $this->_makeBuf($cmd, array((string) $key));
 
         if (!$this->_send($sbuf)) {
@@ -1315,14 +1315,13 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x71);
+        $cmd = pack('c*', 0xC8,0x72);
         $sbuf = $this->_makeBuf($cmd);
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
             return false;
         }
-
         $code = $this->_recvcode();
         if ($code == -1) {
             $this->ecode = ERECV;
@@ -1333,7 +1332,6 @@ class TokyoTyrant_RDB {
             return false;
         }
         return true;
-
     }
 
     /*
@@ -2015,7 +2013,7 @@ class TokyoTyrant_RDB {
       end
       end
     */
-    private function _recv($len){
+    protected function _recv($len){
         if ($len < 1) {
             return "";
         }
@@ -2025,6 +2023,7 @@ class TokyoTyrant_RDB {
         }
 
         $result = fread($this->sock, $len);
+
         if ($result === false) {
             return false;
         }
@@ -2041,10 +2040,10 @@ class TokyoTyrant_RDB {
       n    */
     protected function _recvcode() {
         $rbuf = $this->_recv(1);
-        $rbuf = unpack('c', $rbuf);
-        if (empty($rbuf)) {
+        if (!$rbuf) {
             return -1;
         } else {
+            $rbuf = unpack('c', $rbuf);
             return $rbuf[1];
         }
     }
