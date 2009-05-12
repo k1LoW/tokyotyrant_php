@@ -1552,12 +1552,11 @@ class TokyoTyrant_RDB {
       return _retstr(sbuf)
       end
     */
-    public function stat () {
+    public function stat() {
         if (!$this->sock) {
             $this->ecode = EINVALID;
             return false;
         }
-
         $cmd = pack('c*', 0xC8,0x88);
         $sbuf = $this->_makeBuf($cmd);
 
@@ -1991,7 +1990,6 @@ class TokyoTyrant_RDB {
     protected function _send($buf) {
         $result = fwrite($this->sock, $buf);
         if ($result === false) {
-            //throw new Net_TokyoTyrantNetworkException('socket read error');
             return false;
         } else {
             return true;
@@ -2050,7 +2048,7 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $result = fread($this->sock, $len);
+        $result = fread($this->sock, (int) $len);
 
         if ($result === false) {
             return false;
@@ -2069,6 +2067,7 @@ class TokyoTyrant_RDB {
       n    */
     protected function _recvcode() {
         $rbuf = $this->_recv(1);
+
         if (!$rbuf) {
             return -1;
         } else {
