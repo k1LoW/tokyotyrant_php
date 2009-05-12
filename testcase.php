@@ -1,4 +1,5 @@
 <?php
+ini_set('memory_limit', -1);
 require_once 'TokyoTyrant_RDB.php';
 
 $tt = new TokyoTyrant_RDB();
@@ -14,7 +15,7 @@ $getdata = $tt->open('dummy', 1978);
 
 assert(!$getdata);
 
-$tt->open('localhost', 1978);
+$tt->open('localhost', 1978, 1000);
 
 assert($tt->vanish() === true);
 
@@ -32,19 +33,17 @@ assert($tt->putkeep($key, $data . 'keep') === true);
 
 $getdata = $tt->get($key);
 assert($getdata === $data . 'keep');
-/*
+
 assert($tt->put($key, $data) === true);
 $getdata = $tt->get($key);
+
 assert($getdata === $data);
 assert($tt->putcat($key, $data) === true);
+
 $getdata = $tt->get($key);
 assert($getdata === $data . $data);
 
-
 assert($tt->put($key, $data) === true);
-assert($tt->putrtt($key, $data, 2) === true);
-$getdata = $tt->get($key);
-assert($getdata === substr($data, strlen($data) - 2, 2));
 
 
 assert($tt->out($key) === true);
@@ -53,9 +52,9 @@ assert($getdata === false);
 
 assert($tt->put($key, $data));
 assert($tt->put($key2, $data2));
-assert(count($tt->mget(array($key, $key2))) === 2);
+assert($tt->mget(array($key, $key2)) === 2);
 assert(count($tt->fwmkeys('key', 2)) === 2);
-assert($tt->vsize($key) === strlen($data));
+assert($tt->vsiz($key) === strlen($data));
 assert($tt->vanish() === true);
 assert($tt->iterinit() === true);
 assert($tt->iternext() === false);
@@ -68,10 +67,7 @@ assert($tt->iternext() === false);
 assert($tt->addint($count_key, 1) === 1);
 assert($tt->addint($count_key, 2) === 3);
 assert($tt->addint($count_key, -2) === 1);
-assert($tt->putint($count_key, 1));
-assert($tt->getint($count_key) === 1);
 assert($tt->addint($count_key, 1) === 2);
-assert($tt->getint($count_key) === 2);
 assert($tt->addint($count_key, -3) === -1);
 
 //$value = 'data';
@@ -97,11 +93,13 @@ assert(is_array($tt->size()));
 assert(is_array($tt->rnum()));
 
 assert($tt->copy('/tmp/test.net_tokyotyrant.db') === true);
+
 assert(file_exists('/tmp/test.net_tokyotyrant.db') === true);
-assert(strlen($tt->stat()) > 1);
+
+//assert(strlen($tt->stat()) > 1);
 
 
-assert($tt->optimize('') === true);
-assert($tt->copy('/tmp/test.net_tokyotyrant.db') === true);
-*/
+//assert($tt->optimize('') === true);
+//assert($tt->copy('/tmp/test.net_tokyotyrant.db') === true);
+
 $tt->close();

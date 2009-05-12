@@ -70,7 +70,7 @@ class TokyoTyrant_RDB {
      * @enc = nil
      * @sock = nil
      * end
-    */
+     */
     public function __construct() {
         $this->ecode = ESUCCESS;
         $this->enc = null;
@@ -109,7 +109,7 @@ class TokyoTyrant_RDB {
      *
      * $param Integer $ecode Error Code
      * $return String Error Message
-    */
+     */
     public function errmsg($ecode = null) {
         if (!$ecode) {
             $ecode = $this->ecode;
@@ -148,7 +148,7 @@ class TokyoTyrant_RDB {
      * end
      *
      * return Last Error Code
-    */
+     */
     public function ecode() {
         return $this->ecode;
     }
@@ -201,7 +201,7 @@ class TokyoTyrant_RDB {
      * $host String
      * $port Integer
      * $timeout Integer
-    */
+     */
     public function open($host, $port, $timeout = 10) {
         if ($this->sock) {
             $ecode = EINVALID;
@@ -719,7 +719,7 @@ class TokyoTyrant_RDB {
         }
 
         $code = $this->_recvcode();
-        $rnum = _recvint32();
+        $rnum = $this->_recvint32();
         if ($code == -1) {
             $this->ecode = ERECV;
             return -1;
@@ -741,13 +741,13 @@ class TokyoTyrant_RDB {
                 $this->ecode = ERECV;
                 return -1;
             }
-            $kbuf = $this->_read($ksiz);
-            $vbuf = $this->_read($vsiz);
+            $kbuf = $this->_recv($ksiz);
+            $vbuf = $this->_recv($vsiz);
             if (!$kbuf || !$vbuf) {
                 $this->ecode = ERECV;
                 return -1;
             }
-            $recs[$kbuf] = _retstr($vbuf);
+            $recs[$kbuf] = $this->_retstr($vbuf);
         }
         return $rnum;//return $recs;
     }
@@ -1064,7 +1064,7 @@ class TokyoTyrant_RDB {
         }
 
         $cmd = pack('c*', 0xC8,0x60);
-        $sbuf = $this->_makeBuf($cmd, array((string) $key,(int) $value));
+        $sbuf = $this->_makeBuf($cmd, array((string) $key,(int) $num));
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -1284,6 +1284,29 @@ class TokyoTyrant_RDB {
         return true;
     }
 
+    public function optimize($param)
+    {
+        $cmd = pack('c*', 0xC8,0x71);
+        $sbuf = $this->_makeBuf($cmd, array((string) $param));
+
+        if (!$this->_send($sbuf)) {
+            $this->ecode = ESEND;
+            return false;
+        }
+
+        $code = $this->_recvcode();
+        if ($code == -1) {
+            $this->ecode = ERECV;
+            return false;
+        }
+        if ($code != 0) {
+            $this->ecode = EMISC;
+            return false;
+        }
+        return true;
+
+    }
+
     /*
       # Remove all records.%%
       # If successful, the return value is true, else, it is false.%%
@@ -1490,7 +1513,7 @@ class TokyoTyrant_RDB {
             $this->ecode = EMISC;
             return 0;
         }
-        return $this->_recvint64;
+        return $this->_recvint64();
 
     }
 
@@ -1544,24 +1567,29 @@ class TokyoTyrant_RDB {
         }
 
         $code = $this->_recvcode();
+
         if ($code == -1) {
             $this->ecode = ERECV;
             return false;
         }
+
         if ($code != 0) {
             $this->ecode = ENOREC;
             return false;
         }
+
         $ssiz = $this->_recvint32();
         if ($ssiz < 0) {
             $this->ecode = ERECV;
             return false;
         }
+
         $sbuf = $this->_recv($ssiz);
         if (!$sbuf) {
             $this->ecode = ERECV;
             return false;
         }
+
         return $this->_retstr($sbuf);
 
     }
@@ -2027,6 +2055,7 @@ class TokyoTyrant_RDB {
         if ($result === false) {
             return false;
         }
+
         return $result;
     }
 
