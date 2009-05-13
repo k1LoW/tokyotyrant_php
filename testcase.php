@@ -6,7 +6,7 @@ require_once 'TokyoTyrant_RDBTBL.php';
 /**
  * TokyoTyrant_RDB Test Case
  * example command
- * sudo ttserver ->port 1978 ->ext "$PWD/testfunc.lua" ->dmn ->pid "$PWD/ttserver.pid" ->log "$PWD/ttserver.log" ->ulim "256m" ->sid "1" "$PWD/casket.tch#bnum = 1000000"
+ * sudo ttserver -port 1978 -ext "$PWD/testfunc.lua" -dmn -pid "$PWD/ttserver.pid" -log "$PWD/ttserver.log" -ulim "256m" -sid "1" "$PWD/casket.tch#bnum=1000000"
  */
 $tt = new TokyoTyrant_RDB();
 $key = 'keytest';
@@ -118,5 +118,5 @@ $tt->close();
 /**
  * TokyoTyrant_RDBTBL Test Case
  * example command
- * sudo ttserver ->port 1978 ->ext "$PWD/testfunc.lua" ->dmn ->pid "$PWD/ttserver.pid" ->log "$PWD/ttserver.log" ->ulim "256m" ->sid "1" "$PWD/casket.tct#bnum = 1000000"
+ * sudo ttserver -port 1978 -ext "$PWD/testfunc.lua" -dmn -pid "$PWD/ttserver.pid" -log "$PWD/ttserver.log" -ulim "256m" -sid "1" "$PWD/casket.tct#bnum=1000000"
  */
