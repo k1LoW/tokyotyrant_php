@@ -74,9 +74,10 @@ assert($tt->addint($count_key, -3) === -1);
 
 //$value = 'data';
 //assert($tt->ext($extname, $key, $value) === $value);
-//assert($tt->ext($extname, $key, $value, Net_TokyoTyrant::RDBXOLCKNON) === $value);
-//assert($tt->ext($extname, $key, $value, Net_TokyoTyrant::RDBXOLCKREC) === $value);
-//assert($tt->ext($extname, $key, $value, Net_TokyoTyrant::RDBXOLCKGLB) === $value);
+
+//assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKNON) === $value);
+//assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKREC) === $value);
+//assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKGLB) === $value);
 
 //big size data
 //$big_data = str_repeat('1', 1024 * 128);
@@ -97,7 +98,10 @@ assert(is_array($tt->rnum()));
 assert($tt->copy('/tmp/test.net_tokyotyrant.db') === true);
 assert(file_exists('/tmp/test.net_tokyotyrant.db') === true);
 
-//assert($tt->optimize('') === true);
-//assert($tt->copy('/tmp/test.net_tokyotyrant.db') === true);
+assert($tt->vanish() === true);
+assert(strlen($tt->stat()) > 1);
+
+assert($tt->optimize('') === true);
+assert($tt->copy('/tmp/test.net_tokyotyrant.db') === true);
 
 $tt->close();

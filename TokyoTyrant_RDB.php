@@ -1392,7 +1392,7 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x72);
+        $cmd = pack('c*', 0xC8,0x73);
         $sbuf = $this->_makeBuf($cmd, array((string) $path));
 
         if (!$this->_send($sbuf)) {
