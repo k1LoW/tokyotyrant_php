@@ -2,6 +2,7 @@
 ini_set('memory_limit', -1);
 require_once 'TokyoTyrant_RDB.php';
 require_once 'TokyoTyrant_RDBTBL.php';
+require_once 'TokyoTyrant_RDBQRY.php';
 
 /**
  * TokyoTyrant_RDB Test Case
@@ -118,5 +119,29 @@ $tt->close();
 /**
  * TokyoTyrant_RDBTBL Test Case
  * example command
- * sudo ttserver -port 1978 -ext "$PWD/testfunc.lua" -dmn -pid "$PWD/ttserver.pid" -log "$PWD/ttserver.log" -ulim "256m" -sid "1" "$PWD/casket.tct#bnum=1000000"
+ * sudo ttserver -port 1980 -ext "$PWD/testfunc.lua" -dmn -pid "$PWD/ttserver.pid" -log "$PWD/ttserver.log" -ulim "256m" -sid "1" "$PWD/casket.tct#bnum=1000000"
  */
+$tb = new TokyoTyrant_RDBTBL();
+$key = 'keytest';
+$data = 'the test data';
+$key2 = 'keytest2';
+$data2 = 'the test2 data';
+$count_key = 'count';
+$extname = 'echo';
+$error = null;
+
+$getdata = $tb->open('dummy', 1978);
+
+assert(!$getdata);
+
+$tb->open('localhost', 1980, 1000);
+assert(strlen($tb->stat()) > 1);
+
+//assert($tb->vanish() === true);
+//assert($tb->setindex('name', TokyoTyrant_RDBTBL::ITLEXICAL));
+
+$pkey = $tb->genuid();
+
+assert($pkey !== -1);
+
+$tb->close();

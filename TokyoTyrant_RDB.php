@@ -1650,14 +1650,22 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x90);
-        $sbuf = $this->_makeBuf($cmd, array((string) $name,(int) $opts, $args));
+        $sbuf = pack("CC", 0xC8, 0x90);
+        $sbuf .= pack("N", strlen($name)) . pack("N", $opts) .pack("N", count($args));
+        $sbuf .= $name;
+
+        foreach ($args as $key => $value) {
+            $sbuf .= pack("N", strlen($value));
+        }
+
+        foreach ($args as $key => $value) {
+            $sbuf .= $value;
+        }
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
             return false;
         }
-
         $code = $this->_recvcode();
         $rnum = $this->_recvint32();
         if ($code == -1) {
@@ -1668,10 +1676,11 @@ class TokyoTyrant_RDB {
             $this->ecode = EMISC;
             return false;
         }
+
         $res = array();
         for ($i = 0; $i < $rnum; $i++) {
-            $ebiz = $this->_recvint32();
-            if ($ebiz < 0) {
+            $esiz = $this->_recvint32();
+            if ($esiz < 0) {
                 $this->ecode = ERECV;
                 return false;
             }
