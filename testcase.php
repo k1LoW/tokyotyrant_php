@@ -74,12 +74,12 @@ assert($tt->addint($count_key, -3) === -1);
 
 /*
  * Lua Extension
+ * use testfunc.lua for test
  */
 $value = 'data';
 assert($tt->ext($extname, $key, $value) === $value);
-//assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKNON) === $value);
-//assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKREC) === $value);
-//assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKGLB) === $value);
+assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKREC) === $value);
+assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKGLB) === $value);
 
 //big size data
 //$big_data = str_repeat('1', 1024 * 128);

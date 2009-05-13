@@ -54,7 +54,7 @@ class TokyoTyrant_RDB {
     const XOLCKGLB = 2;
     // versatile function option: omission of the update log
     // Ruby:MONOULOG = 1 << 0
-    const MONOULOG = 3;
+    const MONOULOG = 1;
 
     protected $ecode;
     protected $enc;
