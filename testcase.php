@@ -88,15 +88,7 @@ assert($tt->ext($extname, $key, $value) === $value);
 assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKREC) === $value);
 assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKGLB) === $value);
 
-//big size data
-//$big_data = str_repeat('1', 1024 * 128);
-//for ($i = 0; $i < 1000; $i++) {
-//    assert($tt->put('bigdata', $big_data));
-//}
-
-//$tt->setTimeout(60);
 $big_data = str_repeat('1', 1024 * 1024 * 32);
-// limit size fllow code is error.... fummm....
 //$big_data = str_repeat('1', 1024 * 1024 * 33);
 assert($tt->put('bigdata', $big_data));
 
@@ -122,12 +114,8 @@ $tt->close();
  * sudo ttserver -port 1980 -ext "$PWD/testfunc.lua" -dmn -pid "$PWD/ttserver.pid" -log "$PWD/ttserver.log" -ulim "256m" -sid "1" "$PWD/casket.tct#bnum=1000000"
  */
 $tb = new TokyoTyrant_RDBTBL();
-$key = 'keytest';
-$data = array("OS" => "Ubuntu", "DBM" => "TT/TC");
-$key2 = 'keytest2';
-$data2 = 'the test2 data';
-$count_key = 'count';
-$extname = 'echo';
+$data = array("OS" => "Ubuntu", "DBM" => "TT/TC", "Language" => "PHP", "Web Server" => "Apache/mod_php");
+$data2 = array("OS" => "CentOS", "DBM" => "PostgreSQL", "Language" => "Ruby", "Web Server" => "Apache/passenger");
 $error = null;
 
 $getdata = $tb->open('dummy', 1980);
@@ -148,6 +136,9 @@ assert($tb->get($pkey) === $data);
 $pkey = $tb->genuid();
 assert($tb->putkeep($pkey, $data));
 assert($tb->get($pkey) === $data);
+
+assert($tb->out($pkey) === true);
+assert($tb->get($pkey) === false);
 
 $tb->vanish();
 $tb->close();
