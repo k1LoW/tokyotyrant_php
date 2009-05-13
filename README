@@ -1,5 +1,3 @@
 openpear にて公開されている Net_TokyoTyrant を参考に、 tokyotyrant.rb のAPIにできるだけ近づけたPHP実装をしようとしています。
 
-あくまで実験的な試みです。
-
-使用においては Net_TokyoTyrant を強くお勧めします。
+現在はまだ実験レベルですので、使用においては Net_TokyoTyrant を強くお勧めします。
