@@ -1655,11 +1655,7 @@ class TokyoTyrant_RDB {
         $sbuf .= $name;
 
         foreach ($args as $key => $value) {
-            $sbuf .= pack("N", strlen($value));
-        }
-
-        foreach ($args as $key => $value) {
-            $sbuf .= $value;
+            $sbuf .= pack("N", strlen($value)) . $value;
         }
 
         if (!$this->_send($sbuf)) {
@@ -1668,6 +1664,7 @@ class TokyoTyrant_RDB {
         }
         $code = $this->_recvcode();
         $rnum = $this->_recvint32();
+
         if ($code == -1) {
             $this->ecode = ERECV;
             return false;
@@ -1677,14 +1674,15 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $res = array();
         for ($i = 0; $i < $rnum; $i++) {
             $esiz = $this->_recvint32();
+
             if ($esiz < 0) {
                 $this->ecode = ERECV;
                 return false;
             }
             $ebuf = $this->_recv($esiz);
+
             if (!$ebuf) {
                 $this->ecode = ERECV;
                 return false;
