@@ -1674,6 +1674,7 @@ class TokyoTyrant_RDB {
             return false;
         }
 
+        $res = array();
         for ($i = 0; $i < $rnum; $i++) {
             $esiz = $this->_recvint32();
 

@@ -123,25 +123,31 @@ $tt->close();
  */
 $tb = new TokyoTyrant_RDBTBL();
 $key = 'keytest';
-$data = 'the test data';
+$data = array("OS" => "Ubuntu", "DBM" => "TT/TC");
 $key2 = 'keytest2';
 $data2 = 'the test2 data';
 $count_key = 'count';
 $extname = 'echo';
 $error = null;
 
-$getdata = $tb->open('dummy', 1978);
+$getdata = $tb->open('dummy', 1980);
 
 assert(!$getdata);
 
 $tb->open('localhost', 1980, 1000);
 assert(strlen($tb->stat()) > 1);
 
-//assert($tb->vanish() === true);
-//assert($tb->setindex('name', TokyoTyrant_RDBTBL::ITLEXICAL));
+assert($tb->vanish() === true);
+assert($tb->setindex('name', TokyoTyrant_RDBTBL::ITLEXICAL));
 
 $pkey = $tb->genuid();
-
 assert($pkey !== -1);
+assert($tb->put($pkey, $data));
+assert($tb->get($pkey) === $data);
 
+$pkey = $tb->genuid();
+assert($tb->putkeep($pkey, $data));
+assert($tb->get($pkey) === $data);
+
+$tb->vanish();
 $tb->close();

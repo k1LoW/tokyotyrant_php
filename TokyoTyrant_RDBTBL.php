@@ -75,7 +75,8 @@ class TokyoTyrant_RDBTBL extends TokyoTyrant_RDB{
             $args[] = $cvalue;
         }
         $rv = $this->misc("put", $args, 0);
-        return ($rv) ? true : false;
+        //for empty array()
+        return ($rv !== false) ? true : false;
     }
 
     /*
@@ -108,7 +109,8 @@ class TokyoTyrant_RDBTBL extends TokyoTyrant_RDB{
             $args[] = $cvalue;
         }
         $rv = $this->misc("putkeep", $args, 0);
-        return ($rv) ? true : false;
+        //for empty array()
+        return ($rv !== false) ? true : false;
     }
 
     /*
@@ -141,7 +143,8 @@ class TokyoTyrant_RDBTBL extends TokyoTyrant_RDB{
             $args[] = $cvalue;
         }
         $rv = $this->misc("putcat", $args, 0);
-        return ($rv) ? true : false;
+        //for empty array()
+        return ($rv !== false) ? true : false;
     }
 
     /*
@@ -257,7 +260,8 @@ class TokyoTyrant_RDBTBL extends TokyoTyrant_RDB{
         $args[] = $name;
         $args[] = $type;
         $rv = $this->misc("setindex", $args, 0);
-        return ($rv) ? true : false;
+        //for empty array()
+        return ($rv !== false) ? true : false;
     }
 
     /*
