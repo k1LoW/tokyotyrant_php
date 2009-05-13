@@ -72,9 +72,11 @@ assert($tt->addint($count_key, -2) === 1);
 assert($tt->addint($count_key, 1) === 2);
 assert($tt->addint($count_key, -3) === -1);
 
-//$value = 'data';
-//assert($tt->ext($extname, $key, $value) === $value);
-
+/*
+ * Lua Extension
+ */
+$value = 'data';
+assert($tt->ext($extname, $key, $value) === $value);
 //assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKNON) === $value);
 //assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKREC) === $value);
 //assert($tt->ext($extname, $key, $value, TokyoTyrant_RDB::XOLCKGLB) === $value);
