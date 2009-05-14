@@ -1353,7 +1353,7 @@ class TokyoTyrant_RDB {
      *
      * @return Integer
      */
-    protected function _recvcode() {
+    private function _recvcode() {
         $rbuf = $this->_recv(1);
 
         if (!$rbuf) {
@@ -1371,7 +1371,7 @@ class TokyoTyrant_RDB {
      *
      * @return Integer
      */
-    protected function _recvint32() {
+    private function _recvint32() {
         $result = '';
         $res = $this->_recv(4);
         $res = unpack('N', $res);
@@ -1385,7 +1385,7 @@ class TokyoTyrant_RDB {
      *
      * @return Array
      */
-    protected function _recvint64() {
+    private function _recvint64() {
         $result = '';
         $res = $this->_recv(8);
         $res = unpack('N*', $res);
