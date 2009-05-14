@@ -768,7 +768,6 @@ class TokyoTyrant_RDB {
      *
      * Synchronize updated contents with the file and the device.%%
      *
-     * @return Boolean
      */
     public function sync () {
         if (!$this->sock) {
@@ -1253,7 +1252,6 @@ class TokyoTyrant_RDB {
         }
         return $obj;
     }
-
 
     /**
      * _retstr
