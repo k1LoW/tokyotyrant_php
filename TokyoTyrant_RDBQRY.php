@@ -28,47 +28,47 @@
    *
    */
 class TokyoTyrant_RDBQRY {
-# query condition: string is equal to
+    // query condition: string is equal to
     const QCSTREQ = 0;
-# query condition: string is included in
+    // query condition: string is included in
     const QCSTRINC = 1;
-# query condition: string begins with
+    // query condition: string begins with
     const QCSTRBW = 2;
-# query condition: string ends with
+    // query condition: string ends with
     const QCSTREW = 3;
-# query condition: string includes all tokens in
+    // query condition: string includes all tokens in
     const QCSTRAND = 4;
-# query condition: string includes at least one token in
+    // query condition: string includes at least one token in
     const QCSTROR = 5;
-# query condition: string is equal to at least one token in
+    // query condition: string is equal to at least one token in
     const QCSTROREQ = 6;
-# query condition: string matches regular expressions of
+    // query condition: string matches regular expressions of
     const QCSTRRX = 7;
-# query condition: number is equal to
+    // query condition: number is equal to
     const QCNUMEQ = 8;
-# query condition: number is greater than
+    // query condition: number is greater than
     const QCNUMGT = 9;
-# query condition: number is greater than or equal to
+    // query condition: number is greater than or equal to
     const QCNUMGE = 10;
-# query condition: number is less than
+    // query condition: number is less than
     const QCNUMLT = 11;
-# query condition: number is less than or equal to
+    // query condition: number is less than or equal to
     const QCNUMLE = 12;
-# query condition: number is between two tokens of
+    // query condition: number is between two tokens of
     const QCNUMBT = 13;
-# query condition: number is equal to at least one token in
+    // query condition: number is equal to at least one token in
     const QCNUMOREQ = 14;
-# query condition: negation flag
+    // query condition: negation flag
     //const QCNEGATE = 1 << 24;
-# query condition: no index flag
+    // query condition: no index flag
     //const QCNOIDX = 1 << 25;
-# order type: string ascending
+    // order type: string ascending
     const QOSTRASC = 0;
-# order type: string descending
+    // order type: string descending
     const QOSTRDESC = 1;
-# order type: number ascending
+    // order type: number ascending
     const QONUMASC = 2;
-# order type: number descending
+    // order type: number descending
     const QONUMDESC = 3;
 
     /*
