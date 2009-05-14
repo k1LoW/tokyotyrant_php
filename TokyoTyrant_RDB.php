@@ -1,28 +1,32 @@
 <?php
   /**
-     tokyotyrant.rb
-     lisence:
-     #--
-     # Pure Ruby interface of Tokyo Cabinet
-     #                                                       Copyright (C) 2006-2008 Mikio Hirabayashi
-     #  This file is part of Tokyo Cabinet.
-     #  Tokyo Cabinet is free software; you can redistribute it and/or modify it under the terms of
-     #  the GNU Lesser General Public License as published by the Free Software Foundation; either
-     #  version 2.1 of the License or any later version.  Tokyo Cabinet is distributed in the hope
-     #  that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-     #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-     #  License for more details.
-     #  You should have received a copy of the GNU Lesser General Public License along with Tokyo
-     #  Cabinet; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
-     #  Boston, MA 02111-1307 USA.
-     #++
-     URL:http://tokyocabinet.sourceforge.net/tyrantrubypkg/
-
-     Net_TokyoTyrant
-     lisence:
-     MIT License
-     URL:http://openpear.org/package/Net_TokyoTyrant
-  */
+   * Pure PHP interface of Tokyo Tyrant
+   * Copyright (C) 2009 Kenichirou Oyama
+   *
+   * This package refers to tokyotyrant.rb and Net_TokyoTyrant.
+   *
+   * tokyotyrant.rb lisence:
+   * #--
+   * # Pure Ruby interface of Tokyo Cabinet
+   * #                                                       Copyright (C) 2006-2008 Mikio Hirabayashi
+   * #  This file is part of Tokyo Cabinet.
+   * #  Tokyo Cabinet is free software; you can redistribute it and/or modify it under the terms of
+   * #  the GNU Lesser General Public License as published by the Free Software Foundation; either
+   * #  version 2.1 of the License or any later version.  Tokyo Cabinet is distributed in the hope
+   * #  that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+   * #  License for more details.
+   * #  You should have received a copy of the GNU Lesser General Public License along with Tokyo
+   * #  Cabinet; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+   * #  Boston, MA 02111-1307 USA.
+   * #++
+   * URL:http://tokyocabinet.sourceforge.net/tyrantrubypkg/
+   *
+   * Net_TokyoTyrant lisence:
+   * MIT License
+   * URL:http://openpear.org/package/Net_TokyoTyrant
+   *
+   */
 class TokyoTyrant_RDB {
 
     /**
@@ -47,13 +51,13 @@ class TokyoTyrant_RDB {
     // error code: miscellaneous error
     const EMISC = 9999;
     // scripting extension option: record locking
-    // Ruby:XOLCKREC = 1 << 0
+    // XOLCKREC = 1 << 0
     const XOLCKREC = 1;
     // scripting extension option: global locking
-    // Ruby:XOLCKGLB = 1 << 1
+    // XOLCKGLB = 1 << 1
     const XOLCKGLB = 2;
     // versatile function option: omission of the update log
-    // Ruby:MONOULOG = 1 << 0
+    // MONOULOG = 1 << 0
     const MONOULOG = 1;
 
     protected $ecode;
@@ -62,6 +66,7 @@ class TokyoTyrant_RDB {
 
     /**
      * __construct
+     *
      */
     public function __construct() {
         $this->ecode = ESUCCESS;
@@ -109,7 +114,7 @@ class TokyoTyrant_RDB {
      *
      * Get the last happened error code.
      *
-     * return Last Error Code
+     * @return Last Error Code
      */
     public function ecode() {
         return $this->ecode;
@@ -120,9 +125,10 @@ class TokyoTyrant_RDB {
      *
      * Open a remote database connection.%%
      *
-     * $host String
-     * $port Integer
-     * $timeout Integer
+     * @param String $host
+     * @param Integer $port
+     * @param Integer $timeout
+     * @return Boolean
      */
     public function open($host, $port, $timeout = 10) {
         if ($this->sock) {
@@ -138,8 +144,11 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * close
+     *
      * Close the database connection.
      *
+     * @return Boolean
      */
     public function close() {
         if (!$this->sock) {
@@ -156,8 +165,13 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * put
+     *
      * Store a record.
      *
+     * @param String $key
+     * @param Strint $value
+     * @return Boolean
      */
     public function put($key, $value) {
         if (!$this->sock) {
@@ -185,8 +199,13 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * putkeep
+     *
      * Store a new record.
      *
+     * @param String $key
+     * @param String $value
+     * @return Boolean
      */
     public function putkeep ($key, $value) {
         if (!$this->sock) {
@@ -215,8 +234,13 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * putcat
+     *
      * Concatenate a value at the end of the existing record.
      *
+     * @param String $key
+     * @param String $value
+     * @return Boolean
      */
     public function putcat ($key, $value) {
         if (!$this->sock) {
@@ -246,8 +270,13 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * putshl
+     *
      * Concatenate a value at the end of the existing record and shift it to the left.
      *
+     * @param String $key
+     * @param String $value
+     * @return Boolean
      */
     public function putshl ($key, $value) {
         if (!$this->sock) {
@@ -276,8 +305,13 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * putnr
+     *
      * Store a record without response from the server.
      *
+     * @param String $key
+     * @param String $value
+     * @return Boolean
      */
     public function putnr ($key, $value) {
         if (!$this->sock) {
@@ -296,8 +330,12 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * out
+     *
      * Remove a record.
      *
+     * @param String $key
+     * @return Boolean
      */
     public function out ($key) {
         if (!$this->sock) {
@@ -327,8 +365,12 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * get
+     *
      * Retrieve a record.
      *
+     * @param String $key
+     * @return Mixed
      */
     public function get ($key) {
         if (!$this->sock) {
@@ -369,8 +411,12 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * mget
+     *
      * Retrieve records.
      *
+     * @param Array $recs
+     * @return Mixed
      */
     public function mget ($recs) {
         if (!$this->sock) {
@@ -427,8 +473,12 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * vsiz
+     *
      * Get the size of the value of a record.
      *
+     * @param String $key
+     * @return Mixed
      */
     public function vsiz ($key) {
         if (!$this->sock) {
@@ -458,8 +508,11 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * iterinit
+     *
      * Initialize the iterator.
      *
+     * @return Mixed
      */
     public function iterinit() {
         if (!$this->sock) {
@@ -488,8 +541,11 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * iternext
+     *
      * Get the next key of the iterator.
      *
+     * @return Mixed
      */
     public function iternext() {
         if (!$this->sock) {
@@ -528,8 +584,13 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * fwmkeys
+     *
      * Get forward matching keys.
      *
+     * @param String $prefix
+     * @param Integer $int
+     * @return Array
      */
     public function fwmkeys ($prefix, $max = -1) {
         if (!$this->sock) {
@@ -577,8 +638,13 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * addint
+     *
      * Add an integer to a record.
      *
+     * @param String $key
+     * @param Integer $num
+     * @return Mixed
      */
     public function addint ($key, $num = 0) {
         if (!$this->sock) {
@@ -608,8 +674,13 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * adddouble
+     *
      * Add a real number to a record.
      *
+     * @param String $key
+     * @param Integer $num
+     * @return Mixed
      */
     public function adddouble ($key, $num) {
         if (!$this->sock) {
@@ -646,8 +717,15 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * ext
+     *
      * Call a function of the script language extension.
      *
+     * @param String $name
+     * @param String $key
+     * @param String $value
+     * @param Integer $opts
+     * @return Mixed
      */
     public function ext ($name, $key = "", $value = "", $opts = 0) {
         if (!$this->sock) {
@@ -690,6 +768,7 @@ class TokyoTyrant_RDB {
      *
      * Synchronize updated contents with the file and the device.%%
      *
+     * @return Boolean
      */
     public function sync () {
         if (!$this->sock) {
@@ -720,6 +799,8 @@ class TokyoTyrant_RDB {
     /**
      * optimize
      *
+     * @param String $param
+     * @return Boolean
      */
     public function optimize($param)
     {
@@ -749,6 +830,7 @@ class TokyoTyrant_RDB {
      *
      * Remove all records.
      *
+     * @return Boolean
      */
     public function vanish () {
         if (!$this->sock) {
@@ -776,8 +858,12 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * copy
+     *
      * Copy the database file.
      *
+     * @param String $path
+     * @return Boolean
      */
     public function copy ($path) {
         if (!$this->sock) {
@@ -809,7 +895,7 @@ class TokyoTyrant_RDB {
     /**
      * rnum
      *
-     *
+     * @return Mixed
      */
     public function rnum () {
         if (!$this->sock) {
@@ -843,7 +929,7 @@ class TokyoTyrant_RDB {
      *
      * Get the size of the database.
      *
-     *
+     * @return Mixed
      */
     public function size () {
         if (!$this->sock) {
@@ -877,6 +963,7 @@ class TokyoTyrant_RDB {
      *
      * Get the status string of the database server.
      *
+     * @return Mixed
      */
     public function stat() {
         if (!$this->sock) {
@@ -924,6 +1011,10 @@ class TokyoTyrant_RDB {
      *
      * Call a versatile function for miscellaneous operations.
      *
+     * @param String $name
+     * @param Array $args
+     * @param Integer $opts
+     * @return Mixed
      */
     public function misc($name, $args = array(), $opts = 0) {
         if (!$this->sock) {
@@ -979,7 +1070,8 @@ class TokyoTyrant_RDB {
      */
 
     /**
-     * Hash-compatible method.
+     * store
+     *
      * Alias of `put'.
      *
      */
@@ -988,7 +1080,8 @@ class TokyoTyrant_RDB {
     }
 
     /**
-     * Hash-compatible method.
+     * delete
+     *
      * Alias of `out'.
      *
      */
@@ -997,7 +1090,8 @@ class TokyoTyrant_RDB {
     }
 
     /**
-     * Hash-compatible method.
+     * fetch
+     *
      * Alias of `get'.
      *
      */
@@ -1006,9 +1100,12 @@ class TokyoTyrant_RDB {
     }
 
     /**
-     * Hash-compatible method.
+     * has_key
+     *
      * Check existence of a key.
      *
+     * @param String $key
+     * @return Boolean
      */
     public function has_key($key){
         $vsiz = vsiz($key);
@@ -1020,9 +1117,12 @@ class TokyoTyrant_RDB {
     }
 
     /**
-     * Hash-compatible method.
+     * has_value
+     *
      * Check existence of a value.
      *
+     * @param String $value
+     * @return Boolean
      */
     public function has_value($value) {
         if (!$this->iterinit()) {
@@ -1041,7 +1141,8 @@ class TokyoTyrant_RDB {
     }
 
     /**
-     * Hash-compatible method.
+     * clear
+     *
      * Alias of `vanish'.
      *
      */
@@ -1050,7 +1151,8 @@ class TokyoTyrant_RDB {
     }
 
     /**
-     * Hash-compatible method.
+     * length
+     *
      * Alias of `rnum'.
      *
      */
@@ -1059,8 +1161,9 @@ class TokyoTyrant_RDB {
     }
 
     /**
-     * Hash-compatible method.
-     * Alias of `rnum > 0'.
+     * is_empty
+     *
+     * Alias of `if (rnum > 0) {}'
      *
      */
     public function is_empty(){
@@ -1072,51 +1175,12 @@ class TokyoTyrant_RDB {
         }
     }
 
-    /*
-      # Hash-compatible method.%%
-      # Iterator of pairs of the key and the value.%%
-      def each
-      return nil if !iterinit
-      while key = iternext
-      value = get(key)
-      break if !value
-      yield(key, value)
-      end
-      return nil
-      end
-    */
-
-    // alias each_pair each
-    /*
-      # Hash-compatible method.%%
-      # Iterator of the keys.%%
-      def each_keys
-      return nil if !iterinit
-      while key = iternext
-      yield(key)
-      end
-      return nil
-      end
-    */
-
-    /*
-      # Hash-compatible method.%%
-      # Iterator of the values.%%
-      def each_values
-      return nil if !iterinit
-      while key = iternext
-      value = get(key)
-      break if !value
-      yield(value)
-      end
-      return nil
-      end
-    */
-
     /**
-     * Hash-compatible method.
+     * keys
+     *
      * Get an array of all keys.
      *
+     * @return Array
      */
     public function keys(){
         $tkeys = array();
@@ -1130,9 +1194,11 @@ class TokyoTyrant_RDB {
     }
 
     /**
-     * Hash-compatible method.
+     * values
+     *
      * Get an array of all keys.
      *
+     * @return Array
      */
     public function values() {
         $tvals = array();
@@ -1152,48 +1218,54 @@ class TokyoTyrant_RDB {
     /**
      * private methods
      */
-    //private
     /**
+     * _argstr
+     *
      * Get a string argument.
-     def _argstr(obj)
-     case obj
-     when Numeric
-     obj = obj.to_s
-     when Symbol
-     obj = obj.to_s
-     when String
-     else
-     raise ArgumentError
-     end
-     if obj.respond_to?(:force_encoding)
-     obj = obj.dup
-     obj.force_encoding("ASCII-8BIT")
-     end
-     return obj
-     end
+     *
+     * @param Mixed $obj
+     * @return String
     */
+    private function _argstr($obj) {
+        if (is_numeric($obj)) {
+            $obj = (string) $obj;
+        } elseif (is_string($obj)) {
+        } else {
+            return false;
+        }
+        return $obj;
+    }
 
     /**
+     * _argnum
+     *
      * Get a numeric argument.
-     def _argnum(obj)
-     case obj
-     when String
-     obj = obj.to_i
-     when Numeric
-     else
-     raise ArgumentError
-     end
-     return obj
-     end
+     *
+     * @param $obj
+     * @return Integer
     */
+    private function _argnum($obj) {
+        if (is_string($obj)) {
+            $obj = (int) $obj;
+        } elseif (is_numeric($obj)) {
+        } else {
+            return false;
+        }
+        return $obj;
+    }
+
 
     /**
+     * _retstr
+     *
      * Get a normalized string to be returned
      *
+     * @param String $str
+     * @return String
      */
-    protected function _retstr($str) {
+    private function _retstr($str) {
         if ($this->enc) {
-
+            //TODO:encode $str
         } else {
 
         }
@@ -1201,10 +1273,14 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * _send
+     *
      * Send a series of data.
      *
+     * @param String $buf
+     * @return Boolean
      */
-    protected function _send($buf) {
+    private function _send($buf) {
         $result = fwrite($this->sock, $buf);
         if ($result === false) {
             return false;
@@ -1213,10 +1289,18 @@ class TokyoTyrant_RDB {
         }
     }
 
-    protected function _makeBuf($cmd, $values = array()) {
+    /**
+     * _makeBuf
+     *
+     */
+    private function _makeBuf($cmd, $values = array()) {
         return $cmd . $this->_makeBin($values);
     }
 
+    /**
+     * _makeBin
+     *
+     */
     private function _makeBin($values){
         $int = '';
         $str = '';
@@ -1239,10 +1323,14 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * _recv
+     *
      * Receive a series of data.
      *
+     * @param Integer $len
+     * @return Mixed
      */
-    protected function _recv($len){
+    private function _recv($len){
         if ($len < 1) {
             return "";
         }
@@ -1261,8 +1349,11 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * _recvcode
+     *
      * Receive a byte code.
      *
+     * @return Integer
      */
     protected function _recvcode() {
         $rbuf = $this->_recv(1);
@@ -1276,8 +1367,11 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * _recvint32
+     *
      * Receive an int32 number.
      *
+     * @return Integer
      */
     protected function _recvint32() {
         $result = '';
@@ -1287,26 +1381,19 @@ class TokyoTyrant_RDB {
     }
 
     /**
+     * _recvint64
+     *
      * Receive an int64 number.
      *
+     * @return Array
      */
     protected function _recvint64() {
         $result = '';
         $res = $this->_recv(8);
         $res = unpack('N*', $res);
-        // TODO:
+        // TODO:return double
         return array($res[1], $res[2]);
     }
-
-    /*
-      # Pack an int64 value.%%
-      def _packquad(num)
-      high = (num / (1 << 32)).truncate
-      low = num % (1 << 32)
-      return [high, low].pack("NN")
-      end
-      end
-    */
 
   }
 ?>
