@@ -157,10 +157,8 @@ $tq->setlimit(10);
 assert($tq->searchcount() == 1);
 
 $result = $tq->search();
-$count = 0;
-foreach ($result as $rkey){
-    $rcols = $tb->get($rkey);
-}
+
+assert($tb->get($result[0]) === $data);
 
 $tb->vanish();
 $tb->close();
