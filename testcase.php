@@ -140,5 +140,15 @@ assert($tb->get($pkey) === $data);
 assert($tb->out($pkey) === true);
 assert($tb->get($pkey) === false);
 
+$pkey = $tb->genuid();
+assert($tb->putkeep($pkey, $data2));
+
+$qry = new TokyoTyrant_RDBQRY($tb);
+$qry->addcond("age", $qry->QCNUMEQ, "32");
+$qry->setorder("name", $qry->QOSTRASC);
+$qry->setlimit(10);
+
+assert($qry->searchcount() === 2);
+
 $tb->vanish();
 $tb->close();

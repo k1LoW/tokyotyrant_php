@@ -139,6 +139,7 @@ class TokyoTyrant_RDBQRY {
     */
     public function setlimit($max = -1, $skip = -1){
         $this->args[] = "setlimit" . "\0" . (string)$max . "\0" + (string)$skip;
+        return null;
     }
 
     /*
