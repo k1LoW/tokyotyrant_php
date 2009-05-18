@@ -108,7 +108,7 @@ class TokyoTyrant_RDBQRY {
       end
     */
     public function addcond($name, $op, $expr) {
-        $this->args[] = "addcond" . "\0" + $name . "\0" . (string) $op ."\0" + $expr;
+        $this->args[] = "addcond" . "\0" . $name . "\0" . (string) $op ."\0" . $expr;
         return null;
     }
 
@@ -123,7 +123,7 @@ class TokyoTyrant_RDBQRY {
       end
     */
     public function setorder($name, $type){
-        $this->args[] = "setorder" . "\0" . $name . "\0" + (string)$type;
+        $this->args[] = "setorder" . "\0" . $name . "\0" . (string)$type;
         return null;
     }
 
@@ -138,7 +138,7 @@ class TokyoTyrant_RDBQRY {
       end
     */
     public function setlimit($max = -1, $skip = -1){
-        $this->args[] = "setlimit" . "\0" . (string)$max . "\0" + (string)$skip;
+        $this->args[] = "setlimit" . "\0" . (string)$max . "\0" . (string)$skip;
         return null;
     }
 
@@ -207,7 +207,7 @@ class TokyoTyrant_RDBQRY {
         }
         $args = array();
         if (!empty($names)) {
-            $args[] = "get\0" + join($names,"\0");
+            $args[] = "get\0" . join($names,"\0");
         } else {
             $args[] = "get";
         }

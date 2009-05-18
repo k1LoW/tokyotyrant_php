@@ -57,7 +57,7 @@ class TokyoTyrant_RDB {
     // XOLCKGLB = 1 << 1
     const XOLCKGLB = 2;
     // versatile function option: omission of the update log
-    // MONOULOG = 1 << 0
+    //const MONOULOG = 1 << 0;
     const MONOULOG = 1;
 
     protected $ecode;

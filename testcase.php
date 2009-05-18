@@ -114,8 +114,8 @@ $tt->close();
  * sudo ttserver -port 1980 -ext "$PWD/testfunc.lua" -dmn -pid "$PWD/ttserver.pid" -log "$PWD/ttserver.log" -ulim "256m" -sid "1" "$PWD/casket.tct#bnum=1000000"
  */
 $tb = new TokyoTyrant_RDBTBL();
-$data = array("OS" => "Ubuntu", "DBM" => "TT/TC", "Language" => "PHP", "Web Server" => "Apache/mod_php");
-$data2 = array("OS" => "CentOS", "DBM" => "PostgreSQL", "Language" => "Ruby", "Web Server" => "Apache/passenger");
+$data = array("OS" => "Ubuntu", "DBM" => "TT/TC", "Language" => "PHP", "Web Server" => "Apache/mod_php", "Memory" => "1000000000");
+$data2 = array("OS" => "CentOS", "DBM" => "PostgreSQL", "Language" => "Ruby", "Web Server" => "Apache/passenger", "Memory" => "2000000000");
 $error = null;
 
 $getdata = $tb->open('dummy', 1980);
@@ -140,15 +140,27 @@ assert($tb->get($pkey) === $data);
 assert($tb->out($pkey) === true);
 assert($tb->get($pkey) === false);
 
+$tb->vanish();
+
+$pkey = $tb->genuid();
+assert($tb->putkeep($pkey, $data));
+assert($tb->get($pkey) === $data);
+
 $pkey = $tb->genuid();
 assert($tb->putkeep($pkey, $data2));
 
-$qry = new TokyoTyrant_RDBQRY($tb);
-$qry->addcond("age", $qry->QCNUMEQ, "32");
-$qry->setorder("name", $qry->QOSTRASC);
-$qry->setlimit(10);
+$tq = new TokyoTyrant_RDBQRY($tb);
+$tq->addcond("DBM", TokyoTyrant_RDBQRY::QCSTRINC, "TT");
+$tq->setorder("Memory", TokyoTyrant_RDBQRY::QOSTRDESC);
+$tq->setlimit(10);
 
-assert($qry->searchcount() === 2);
+assert($tq->searchcount() == 1);
+
+$result = $tq->search();
+$count = 0;
+foreach ($result as $rkey){
+    $rcols = $tb->get($rkey);
+}
 
 $tb->vanish();
 $tb->close();
