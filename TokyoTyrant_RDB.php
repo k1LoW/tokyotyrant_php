@@ -1382,6 +1382,7 @@ class TokyoTyrant_RDB {
      * _recvint64
      *
      * Receive an int64 number.
+     * but this is less-accurate function
      *
      * @return Array
      */
@@ -1389,8 +1390,9 @@ class TokyoTyrant_RDB {
         $result = '';
         $res = $this->_recv(8);
         $res = unpack('N*', $res);
-        // TODO:return double
-        return array($res[1], $res[2]);
+        //return array($res[1], $res[2]);
+        $s = $res[1] . $res[2];
+        return (double) $s;
     }
 
   }

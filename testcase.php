@@ -93,8 +93,8 @@ $big_data = str_repeat('1', 1024 * 1024 * 32);
 assert($tt->put('bigdata', $big_data));
 
 assert($tt->sync() === true);
-assert(is_array($tt->size()));
-assert(is_array($tt->rnum()));
+assert(!is_array($tt->size()));
+assert(!is_array($tt->rnum()));
 
 assert($tt->copy('/tmp/test.net_tokyotyrant.db') === true);
 assert(file_exists('/tmp/test.net_tokyotyrant.db') === true);
@@ -159,6 +159,12 @@ assert($tq->searchcount() == 1);
 $result = $tq->search();
 
 assert($tb->get($result[0]) === $data);
+
+$tq = new TokyoTyrant_RDBQRY($tb);
+$tq->setorder("Memory", TokyoTyrant_RDBQRY::QOSTRDESC);
+assert($tq->searchcount() == 2);
+$result = $tq->search();
+assert($tb->get($result[0]) === $data2);
 
 $tb->vanish();
 $tb->close();

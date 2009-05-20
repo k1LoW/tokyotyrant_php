@@ -75,8 +75,7 @@ class TokyoTyrant_RDBQRY {
     protected $args = array();
 
     public function __construct($rdb){
-        //TODO:Refactor code
-        if (!$rdb) {
+        if (!is_a($rdb, 'TokyoTyrant_RDBTBL')) {
             return false;
         }
         $this->rdb = $rdb;
