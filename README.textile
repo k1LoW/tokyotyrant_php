@@ -1,6 +1,8 @@
-h1. Yet Another "Tokyo Tyrant" PHP API
+h1. Yet Another "Tokyo Tyrant" PHP Interface
 
-"openpear":http://openpear.org/ にて公開されている "Net_TokyoTyrant":http://openpear.org/package/Net_TokyoTyrant を参考に、 "tokyotyrant.rb":http://tokyocabinet.sourceforge.net/tyrantrubypkg/ のAPIにできるだけ近づけたPHP実装をしようとしています。
+Welcome to the Yet Another "Tokyo Tyrant" PHP Interface wiki!
+
+"openpear":http://openpear.org/ にて公開されている "Net_TokyoTyrant":http://openpear.org/package/Net_TokyoTyrant を参考に、 "tokyotyrant.rb":http://tokyocabinet.sourceforge.net/tyrantrubypkg/ のInterfaceにできるだけ近づけたPHP実装をしようとしています。
 
 現在はまだ実験レベルですので、
 使用においては "Net_TokyoTyrant":http://openpear.org/package/Net_TokyoTyrant を強くお勧めします。
@@ -17,7 +19,7 @@ h2. 対応状況
 * TokyoTyrant::RDBTBL
 * TokyoTyrant::RDBQRY
 
-の約90%はカバーしていると考えています。
+の約90%はカバーしていると考えています。多分。
 現在タスクとして残っているのはPHP固有の問題の解消のみです。
 
 h2. PHP固有の問題
