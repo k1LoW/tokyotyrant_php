@@ -1,0 +1,32 @@
+h1. Yet Another "Tokyo Tyrant" PHP API
+
+Welcome to the Yet Another Net_TokyoTyrant wiki!
+
+"openpear":http://openpear.org/ にて公開されている "Net_TokyoTyrant":http://openpear.org/package/Net_TokyoTyrant を参考に、 "tokyotyrant.rb":http://tokyocabinet.sourceforge.net/tyrantrubypkg/ のAPIにできるだけ近づけたPHP実装をしようとしています。
+
+現在はまだ実験レベルですので、
+使用においては "Net_TokyoTyrant":http://openpear.org/package/Net_TokyoTyrant を強くお勧めします。
+
+h2. 使用方法
+
+testcase.phpを参考にしてください。
+
+h2. 対応状況
+
+現在tokyotyrant.rb Ver 1.6の
+
+* TokyoTyrant::RDB
+* TokyoTyrant::RDBTBL
+* TokyoTyrant::RDBQRY
+
+の約90%はカバーしていると考えています。
+現在タスクとして残っているのはPHP固有の問題の解消のみです。
+
+h2. PHP固有の問題
+
+現在分かっているPHP固有の問題と対応状況は以下です。
+
+* 64bitの整数の扱い
+** 対応:floatで返している
+* constにビットシフトの式を含む値を設定することができない。
+** 対応:コメントアウト、または整数を設定
