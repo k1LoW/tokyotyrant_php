@@ -1,7 +1,5 @@
 h1. Yet Another "Tokyo Tyrant" PHP API
 
-Welcome to the Yet Another Net_TokyoTyrant wiki!
-
 "openpear":http://openpear.org/ にて公開されている "Net_TokyoTyrant":http://openpear.org/package/Net_TokyoTyrant を参考に、 "tokyotyrant.rb":http://tokyocabinet.sourceforge.net/tyrantrubypkg/ のAPIにできるだけ近づけたPHP実装をしようとしています。
 
 現在はまだ実験レベルですので、
