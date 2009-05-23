@@ -28,7 +28,7 @@ assert(strlen($tt->stat()) > 1);
 assert($tt->vanish() === true);
 
 //TokyoTyrant_RDB->put()
-assert($tt->put($key, $data) === true);
+assert($tt->put($key, $data)  === true);
 
 //TokyoTyrant_RDB->get()
 $getdata = $tt->get($key);

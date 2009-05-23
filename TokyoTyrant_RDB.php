@@ -178,8 +178,9 @@ class TokyoTyrant_RDB {
             $this->ecode = EINVALID;
             return false;
         }
-        $cmd = pack('c*', 0xC8,0x10);
-        $sbuf = $this->_makeBuf($cmd, array((string) $key,(string) $value));
+        $sbuf = pack("CC", 0xC8, 0x10);
+        $sbuf .= pack("N", strlen($key)) . pack("N", strlen($value));
+        $sbuf .= $key . $value;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -213,8 +214,9 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x11);
-        $sbuf = $this->_makeBuf($cmd, array((string) $key,(string) $value));
+        $sbuf = pack("CC", 0xC8, 0x11);
+        $sbuf .= pack("N", strlen($key)) . pack("N", strlen($value));
+        $sbuf .= $key . $value;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -248,8 +250,9 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x12);
-        $sbuf = $this->_makeBuf($cmd, array((string) $key,(string) $value));
+        $sbuf = pack("CC", 0xC8, 0x12);
+        $sbuf .= pack("N", strlen($key)) . pack("N", strlen($value));
+        $sbuf .= $key . $value;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -283,8 +286,10 @@ class TokyoTyrant_RDB {
             $this->ecode = EINVALID;
             return false;
         }
-        $cmd = pack('c*', 0xC8,0x13);
-        $sbuf = $this->_makeBuf($cmd, array((string) $key,(string) $value));
+
+        $sbuf = pack("CC", 0xC8, 0x13);
+        $sbuf .= pack("N", strlen($key)) . pack("N", strlen($value));
+        $sbuf .= $key . $value;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -318,8 +323,10 @@ class TokyoTyrant_RDB {
             $this->ecode = EINVALID;
             return false;
         }
-        $cmd = pack('c*', 0xC8,0x18);
-        $sbuf = $this->_makeBuf($cmd, array((string) $key,(string) $value));
+
+        $sbuf = pack("CC", 0xC8, 0x18);
+        $sbuf .= pack("N", strlen($key)) . pack("N", strlen($value));
+        $sbuf .= $key . $value;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -343,8 +350,9 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x20);
-        $sbuf = $this->_makeBuf($cmd, array((string) $key));
+        $sbuf = pack("CC", 0xC8, 0x20);
+        $sbuf .= pack("N", strlen($key));
+        $sbuf .= $key;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -378,8 +386,9 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x30);
-        $sbuf = $this->_makeBuf($cmd, array((string) $key));
+        $sbuf = pack("CC", 0xC8, 0x30);
+        $sbuf .= pack("N", strlen($key));
+        $sbuf .= $key;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -421,17 +430,18 @@ class TokyoTyrant_RDB {
     public function mget ($recs) {
         if (!$this->sock) {
             $this->ecode = EINVALID;
-            return false;
+            return -1;
         }
 
-        $cmd = pack('c*', 0xC8,0x31);
-        $rnum = count($recs);
-        $values = array();
-        $values[] = $rnum;
+        $rnum = 0;
+        $sbuf = "";
         foreach($recs as $key) {
-            $values[] = array((string) $key);
+            $key = $this->_argstr($key);
+            $sbuf .= pack("N", strlen($key)) . $key;
+            $rnum += 1;
         }
-        $sbuf = $this->_makeBuf($cmd, array($values));
+
+        $sbuf = pack("CC", 0xC8, 0x31) . pack("N", $rnum) . $sbuf;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -486,8 +496,9 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x38);
-        $sbuf = $this->_makeBuf($cmd, array((string) $key));
+        $sbuf = pack("CC", 0xC8, 0x38);
+        $sbuf .= pack("N", strlen($key));
+        $sbuf .= $key;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -520,8 +531,7 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x50);
-        $sbuf = $this->_makeBuf($cmd);
+        $sbuf = pack("CC", 0xC8, 0x50);
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -553,8 +563,7 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x51);
-        $sbuf = $this->_makeBuf($cmd);
+        $sbuf = pack("CC", 0xC8, 0x51);
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -598,8 +607,9 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x58);
-        $sbuf = $this->_makeBuf($cmd, array((string) $prefix,(int) $max));
+        $sbuf = pack("CC", 0xC8, 0x58);
+        $sbuf .= pack("N", strlen($prefix)) . pack("N", $max);
+        $sbuf .= $prefix;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -652,8 +662,9 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x60);
-        $sbuf = $this->_makeBuf($cmd, array((string) $key,(int) $num));
+        $sbuf = pack("CC", 0xC8, 0x60);
+        $sbuf .= pack("N", strlen($key)) . pack("N", $num);
+        $sbuf .= $key;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -690,6 +701,12 @@ class TokyoTyrant_RDB {
         $integ = floor($num);
         $fract = floor(($num - $integ) * 1000000000000);
 
+        /*
+        $sbuf = pack("CC", 0xC8, 0x61);
+        $sbuf .= pack("N", strlen($key)) . pack("N", $integ) . pack("N", $fract);
+        $sbuf .= $key . $this->_packquad($integ) . $this->_packquad($fract);
+        */
+
         $cmd = pack('c*', 0xC8,0x61);
         $sbuf = $this->_makeBuf($cmd, array((string) $key, $integ, $flact));
 
@@ -710,10 +727,9 @@ class TokyoTyrant_RDB {
         $integ = $this->_recvint64();
         $fract = $this->_recvint64();
 
-        //TODO:use double?
-        return array($integ, $fract);
-
-        //return $integ + $fract / 1000000000000.0;
+        //TODO:use float?
+        //return array($integ, $fract);
+        return (float) $integ + $fract / 1000000000000.0;
     }
 
     /**
@@ -733,8 +749,9 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x68);
-        $sbuf = $this->_makeBuf($cmd, array((string) $name,(int) $opts, (string) $key, (string) $value));
+        $sbuf = pack("CC", 0xC8, 0x68);
+        $sbuf .= pack("N", strlen($name)) . pack("N", $opts) . pack("N", strlen($key)) . pack("N", strlen($value));
+        $sbuf .= $name . $key . $value;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -775,8 +792,7 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x70);
-        $sbuf = $this->_makeBuf($cmd);
+        $sbuf = pack("CC", 0xC8, 0x70);
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -801,10 +817,11 @@ class TokyoTyrant_RDB {
      * @param String $param
      * @return Boolean
      */
-    public function optimize($param)
-    {
-        $cmd = pack('c*', 0xC8,0x71);
-        $sbuf = $this->_makeBuf($cmd, array((string) $param));
+    public function optimize($param) {
+
+        $sbuf = pack("CC", 0xC8, 0x71);
+        $sbuf .= pack("N", strlen($param));
+        $sbuf .= $param;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -837,8 +854,7 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x72);
-        $sbuf = $this->_makeBuf($cmd);
+        $sbuf = pack("CC", 0xC8, 0x72);
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -870,8 +886,9 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $cmd = pack('c*', 0xC8,0x73);
-        $sbuf = $this->_makeBuf($cmd, array((string) $path));
+        $sbuf = pack("CC", 0xC8, 0x73);
+        $sbuf .= pack("N", strlen($path));
+        $sbuf .= $path;
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -902,8 +919,7 @@ class TokyoTyrant_RDB {
             return 0;
         }
 
-        $cmd = pack('c*', 0xC8,0x80);
-        $sbuf = $this->_makeBuf($cmd);
+        $sbuf = pack("CC", 0xC8, 0x80);
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -936,8 +952,7 @@ class TokyoTyrant_RDB {
             return 0;
         }
 
-        $cmd = pack('c*', 0xC8,0x81);
-        $sbuf = $this->_makeBuf($cmd);
+        $sbuf = pack("CC", 0xC8, 0x81);
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
@@ -969,8 +984,8 @@ class TokyoTyrant_RDB {
             $this->ecode = EINVALID;
             return false;
         }
-        $cmd = pack('c*', 0xC8,0x88);
-        $sbuf = $this->_makeBuf($cmd);
+
+        $sbuf = pack("CC", 0xC8, 0x88);
 
         if (!$this->_send($sbuf)) {
             $this->ecode = ESEND;
