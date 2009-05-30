@@ -1,6 +1,6 @@
 h1. Yet Another "Tokyo Tyrant" PHP Interface
 
-Welcome to the Yet Another "Tokyo Tyrant" PHP Interface wiki!
+Welcome to the Yet Another "Tokyo Tyrant" PHP Interface wiki!!
 
 "openpear":http://openpear.org/ にて公開されている "Net_TokyoTyrant":http://openpear.org/package/Net_TokyoTyrant を参考に、 "tokyotyrant.rb":http://tokyocabinet.sourceforge.net/tyrantrubypkg/ のInterfaceにできるだけ近づけたPHP実装をしようとしています。
 
