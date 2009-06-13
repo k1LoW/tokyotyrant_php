@@ -7,17 +7,17 @@
    *
    * tokyotyrant.rb lisence:
    * #--
-   * # Pure Ruby interface of Tokyo Cabinet
+   * # Pure Ruby interface of Tokyo Tyrant
    * #                                                       Copyright (C) 2006-2008 Mikio Hirabayashi
-   * #  This file is part of Tokyo Cabinet.
-   * #  Tokyo Cabinet is free software; you can redistribute it and/or modify it under the terms of
+   * #  This file is part of Tokyo Tyrant.
+   * #  Tokyo Tyrant is free software; you can redistribute it and/or modify it under the terms of
    * #  the GNU Lesser General Public License as published by the Free Software Foundation; either
-   * #  version 2.1 of the License or any later version.  Tokyo Cabinet is distributed in the hope
+   * #  version 2.1 of the License or any later version.  Tokyo Tyrant is distributed in the hope
    * #  that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
    * #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
    * #  License for more details.
    * #  You should have received a copy of the GNU Lesser General Public License along with Tokyo
-   * #  Cabinet; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+   * #  Tyrant; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
    * #  Boston, MA 02111-1307 USA.
    * #++
    * URL:http://tokyocabinet.sourceforge.net/tyrantrubypkg/
@@ -1110,7 +1110,7 @@ class TokyoTyrant_RDB {
      *
      */
     public function fetch($key) {
-        return out($key);
+        return $this->get($key);
     }
 
     /**
