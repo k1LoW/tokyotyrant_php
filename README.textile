@@ -13,7 +13,7 @@ testcase.phpを参考にしてください。
 
 h2. 対応状況
 
-現在tokyotyrant.rb Ver 1.6の
+現在tokyotyrant.rb Ver 1.9の
 
 * TokyoTyrant::RDB
 * TokyoTyrant::RDBTBL
