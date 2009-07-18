@@ -702,9 +702,9 @@ class TokyoTyrant_RDB {
         $fract = floor(($num - $integ) * 1000000000000);
 
         /*
-        $sbuf = pack("CC", 0xC8, 0x61);
-        $sbuf .= pack("N", strlen($key)) . pack("N", $integ) . pack("N", $fract);
-        $sbuf .= $key . $this->_packquad($integ) . $this->_packquad($fract);
+          $sbuf = pack("CC", 0xC8, 0x61);
+          $sbuf .= pack("N", strlen($key)) . pack("N", $integ) . pack("N", $fract);
+          $sbuf .= $key . $this->_packquad($integ) . $this->_packquad($fract);
         */
 
         $cmd = pack('c*', 0xC8,0x61);
@@ -1048,6 +1048,7 @@ class TokyoTyrant_RDB {
             $this->ecode = ESEND;
             return false;
         }
+
         $code = $this->_recvcode();
         $rnum = $this->_recvint32();
 
@@ -1239,7 +1240,7 @@ class TokyoTyrant_RDB {
      *
      * @param Mixed $obj
      * @return String
-    */
+     */
     private function _argstr($obj) {
         if (is_numeric($obj)) {
             $obj = (string) $obj;
@@ -1257,7 +1258,7 @@ class TokyoTyrant_RDB {
      *
      * @param $obj
      * @return Integer
-    */
+     */
     private function _argnum($obj) {
         if (is_string($obj)) {
             $obj = (int) $obj;
@@ -1294,7 +1295,8 @@ class TokyoTyrant_RDB {
      * @return Boolean
      */
     private function _send($buf) {
-        $result = fwrite($this->sock, $buf);
+        $result = $this->_fullwrite($this->sock, $buf);
+
         if ($result === false) {
             return false;
         } else {
@@ -1352,7 +1354,7 @@ class TokyoTyrant_RDB {
             return false;
         }
 
-        $result = fread($this->sock, (int) $len);
+        $result = $this->_fullread($this->sock, (int) $len);
 
         if ($result === false) {
             return false;
@@ -1408,6 +1410,44 @@ class TokyoTyrant_RDB {
         //return array($res[1], $res[2]);
         $s = $res[1] . $res[2];
         return (double) $s;
+    }
+
+    /**
+     * _fullread
+     * Read large binary data.
+     * http://buyukliev.blogspot.com/2007/08/no-more-socket-trouble-in-php.html
+     *
+     * @return
+     */
+    private function _fullread ($sd, $len) {
+        $ret = '';
+        $read = 0;
+
+        while ($read < $len && ($buf = fread($sd, $len - $read))) {
+            $read += strlen($buf);
+            $ret .= $buf;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * _fullread
+     * Write large binary data.
+     * http://buyukliev.blogspot.com/2007/08/no-more-socket-trouble-in-php.html
+     *
+     * @return
+     */
+    private function _fullwrite ($sd, $buf) {
+        $total = 0;
+        $len = strlen($buf);
+
+        while ($total < $len && ($written = fwrite($sd, $buf))) {
+            $total += $written;
+            $buf = substr($buf, $written);
+        }
+
+        return $total;
     }
 
   }

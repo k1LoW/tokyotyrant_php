@@ -94,7 +94,7 @@ class TokyoTyrant_RDBTBL extends TokyoTyrant_RDB{
             $args[] = $cvalue;
         }
         $rv = $this->misc("putkeep", $args, 0);
-        if ($rv !== false) {
+        if ($rv === false) {
             if ($this->ecode == EMISC) {
                 $this->ecode = EKEEP;
             }
@@ -138,7 +138,7 @@ class TokyoTyrant_RDBTBL extends TokyoTyrant_RDB{
         $args = array();
         $args[] = $pkey;
         $rv = $this->misc("out", $args, 0);
-        if ($rv !== false) {
+        if ($rv === false) {
             if ($this->ecode == EMISC) {
                 $this->ecode = ENOREC;
             }
@@ -159,7 +159,8 @@ class TokyoTyrant_RDBTBL extends TokyoTyrant_RDB{
         $args = array();
         $args[] = $pkey;
         $rv = $this->misc("get", $args);
-        if ($rv !== false) {
+
+        if ($rv  === false) {
             if ($this->ecode == EMISC) {
                 $this->ecode = ENOREC;
             }
