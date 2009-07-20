@@ -69,7 +69,7 @@ class TokyoTyrant_RDB {
      *
      */
     public function __construct() {
-        $this->ecode = ESUCCESS;
+        $this->ecode = self::ESUCCESS;
         $this->enc = null;
         $this->sock = null;
     }
@@ -86,23 +86,23 @@ class TokyoTyrant_RDB {
         if (!$ecode) {
             $ecode = $this->ecode;
         }
-        if ($ecode == ESUCCESS) {
+        if ($ecode == self::ESUCCESS) {
             return "success";
-        } elseif ($ecode == EINVALID) {
+        } elseif ($ecode == self::EINVALID) {
             return "invalid operation";
-        } elseif ($ecode == ENOHOST) {
+        } elseif ($ecode == self::ENOHOST) {
             return "host not found";
-        } elseif ($ecode == EREFUSED) {
+        } elseif ($ecode == self::EREFUSED) {
             return "connection refused";
-        } elseif ($ecode == ESEND) {
+        } elseif ($ecode == self::ESEND) {
             return "send error";
-        } elseif ($ecode == ERECV) {
+        } elseif ($ecode == self::ERECV) {
             return "recv error";
-        } elseif ($ecode == EKEEP) {
+        } elseif ($ecode == self::EKEEP) {
             return "existing record";
-        } elseif ($ecode == ENOREC) {
+        } elseif ($ecode == self::ENOREC) {
             return "no record found";
-        } elseif ($ecode == EMISC) {
+        } elseif ($ecode == self::EMISC) {
             return "miscellaneous error";
         } else {
             return "unknown";
@@ -132,12 +132,12 @@ class TokyoTyrant_RDB {
      */
     public function open($host, $port, $timeout = 10) {
         if ($this->sock) {
-            $ecode = EINVALID;
+            $ecode = self::EINVALID;
             return false;
         }
         $this->sock = @fsockopen($host,$port, $this->errorNo, $errorMessage, $timeout);
         if (! $this->sock) {
-            $ecode = EREFUSED;
+            $ecode = self::EREFUSED;
             return false;
         }
         return true;
@@ -152,13 +152,13 @@ class TokyoTyrant_RDB {
      */
     public function close() {
         if (!$this->sock) {
-            $ecode = EINVALID;
+            $ecode = self::EINVALID;
             return false;
         }
         if (fclose($this->sock)) {
             return true;
         } else {
-            $ecode = EMISC;
+            $ecode = self::EMISC;
             $sock = null;
             return false;
         }
@@ -175,7 +175,7 @@ class TokyoTyrant_RDB {
      */
     public function put($key, $value) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
         $sbuf = pack("CC", 0xC8, 0x10);
@@ -183,17 +183,17 @@ class TokyoTyrant_RDB {
         $sbuf .= $key . $value;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return false;
         }
         return true;
@@ -210,7 +210,7 @@ class TokyoTyrant_RDB {
      */
     public function putkeep ($key, $value) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -219,17 +219,17 @@ class TokyoTyrant_RDB {
         $sbuf .= $key . $value;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EKEEP;
+            $this->ecode = self::EKEEP;
             return false;
         }
         return true;
@@ -246,7 +246,7 @@ class TokyoTyrant_RDB {
      */
     public function putcat ($key, $value) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -255,17 +255,17 @@ class TokyoTyrant_RDB {
         $sbuf .= $key . $value;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return false;
         }
         return true;
@@ -283,7 +283,7 @@ class TokyoTyrant_RDB {
      */
     public function putshl ($key, $value) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -292,17 +292,17 @@ class TokyoTyrant_RDB {
         $sbuf .= $key . $value;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return false;
         }
         return true;
@@ -320,7 +320,7 @@ class TokyoTyrant_RDB {
      */
     public function putnr ($key, $value) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -329,7 +329,7 @@ class TokyoTyrant_RDB {
         $sbuf .= $key . $value;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
         return true;
@@ -346,7 +346,7 @@ class TokyoTyrant_RDB {
      */
     public function out ($key) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -355,17 +355,17 @@ class TokyoTyrant_RDB {
         $sbuf .= $key;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = ENOREC;
+            $this->ecode = self::ENOREC;
             return false;
         }
         return true;
@@ -382,7 +382,7 @@ class TokyoTyrant_RDB {
      */
     public function get ($key) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -391,28 +391,28 @@ class TokyoTyrant_RDB {
         $sbuf .= $key;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = ENOREC;
+            $this->ecode = self::ENOREC;
             return false;
         }
 
         $vsiz = $this->_recvint32();
         if ($vsiz < 0) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         $vbuf = $this->_recv($vsiz);
         if (!$vbuf) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
 
@@ -429,7 +429,7 @@ class TokyoTyrant_RDB {
      */
     public function mget ($recs) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return -1;
         }
 
@@ -444,22 +444,22 @@ class TokyoTyrant_RDB {
         $sbuf = pack("CC", 0xC8, 0x31) . pack("N", $rnum) . $sbuf;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         $rnum = $this->_recvint32();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return -1;
         }
         if ($code != 0) {
-            $this->ecode = ENOREC;
+            $this->ecode = self::ENOREC;
             return -1;
         }
         if ($rnum < 0) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return -1;
         }
         $recs = array();
@@ -468,13 +468,13 @@ class TokyoTyrant_RDB {
             $ksiz = $this->_recvint32();
             $vsiz = $this->_recvint32();
             if ($ksiz < 0 || $vsiz < 0) {
-                $this->ecode = ERECV;
+                $this->ecode = self::ERECV;
                 return -1;
             }
             $kbuf = $this->_recv($ksiz);
             $vbuf = $this->_recv($vsiz);
             if (!$kbuf || !$vbuf) {
-                $this->ecode = ERECV;
+                $this->ecode = self::ERECV;
                 return -1;
             }
             $recs[$kbuf] = $this->_retstr($vbuf);
@@ -492,7 +492,7 @@ class TokyoTyrant_RDB {
      */
     public function vsiz ($key) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -501,17 +501,17 @@ class TokyoTyrant_RDB {
         $sbuf .= $key;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = ENOREC;
+            $this->ecode = self::ENOREC;
             return false;
         }
         return $this->_recvint32();
@@ -527,24 +527,24 @@ class TokyoTyrant_RDB {
      */
     public function iterinit() {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
         $sbuf = pack("CC", 0xC8, 0x50);
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return false;
         }
         return true;
@@ -559,34 +559,34 @@ class TokyoTyrant_RDB {
      */
     public function iternext() {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
         $sbuf = pack("CC", 0xC8, 0x51);
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = ENOREC;
+            $this->ecode = self::ENOREC;
             return false;
         }
         $vsiz = $this->_recvint32();
         if ($vsiz < 0) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         $vbuf = $this->_recv($vsiz);
         if (!$vbuf) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         return $this->_retstr($vbuf);
@@ -603,7 +603,7 @@ class TokyoTyrant_RDB {
      */
     public function fwmkeys ($prefix, $max = -1) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -612,34 +612,34 @@ class TokyoTyrant_RDB {
         $sbuf .= $prefix;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return array();
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return array();
         }
         if ($code != 0) {
-            $this->ecode = ENOREC;
+            $this->ecode = self::ENOREC;
             return array();
         }
         $knum = $this->_recvint32();
         if ($knum < 0) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return array();
         }
         $keys = array();
         for ($i = 0; $i < $knum; $i++) {
             $ksiz = $this->_recvint32();
             if ($ksiz < 0) {
-                $this->ecode = ERECV;
+                $this->ecode = self::ERECV;
                 return array();
             }
             $kbuf = $this->_recv($ksiz);
             if (!$kbuf) {
-                $this->ecode = ERECV;
+                $this->ecode = self::ERECV;
                 return array();
             }
             $keys[] = $this->_retstr($kbuf);
@@ -658,7 +658,7 @@ class TokyoTyrant_RDB {
      */
     public function addint ($key, $num = 0) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -667,17 +667,17 @@ class TokyoTyrant_RDB {
         $sbuf .= $key;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EKEEP;
+            $this->ecode = self::EKEEP;
             return false;
         }
         return $this->_recvint32();
@@ -695,7 +695,7 @@ class TokyoTyrant_RDB {
      */
     public function adddouble ($key, $num) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
         $integ = floor($num);
@@ -711,17 +711,17 @@ class TokyoTyrant_RDB {
         $sbuf = $this->_makeBuf($cmd, array((string) $key, $integ, $flact));
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EKEEP;
+            $this->ecode = self::EKEEP;
             return false;
         }
         $integ = $this->_recvint64();
@@ -745,7 +745,7 @@ class TokyoTyrant_RDB {
      */
     public function ext ($name, $key = "", $value = "", $opts = 0) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -754,27 +754,27 @@ class TokyoTyrant_RDB {
         $sbuf .= $name . $key . $value;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return false;
         }
         $vsiz = $this->_recvint32();
         if ($vsiz < 0) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         $vbuf = $this->_recv($vsiz);
         if (!$vbuf) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         return $this->_retstr($vbuf);
@@ -788,24 +788,24 @@ class TokyoTyrant_RDB {
      */
     public function sync () {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
         $sbuf = pack("CC", 0xC8, 0x70);
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return false;
         }
         return true;
@@ -824,17 +824,17 @@ class TokyoTyrant_RDB {
         $sbuf .= $param;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return false;
         }
         return true;
@@ -850,23 +850,23 @@ class TokyoTyrant_RDB {
      */
     public function vanish () {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
         $sbuf = pack("CC", 0xC8, 0x72);
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return false;
         }
         return true;
@@ -882,7 +882,7 @@ class TokyoTyrant_RDB {
      */
     public function copy ($path) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -891,17 +891,17 @@ class TokyoTyrant_RDB {
         $sbuf .= $path;
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return false;
         }
         return true;
@@ -915,24 +915,24 @@ class TokyoTyrant_RDB {
      */
     public function rnum () {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return 0;
         }
 
         $sbuf = pack("CC", 0xC8, 0x80);
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return 0;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return 0;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return 0;
         }
 
@@ -948,24 +948,24 @@ class TokyoTyrant_RDB {
      */
     public function size () {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return 0;
         }
 
         $sbuf = pack("CC", 0xC8, 0x81);
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return 0;
         }
 
         $code = $this->_recvcode();
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return 0;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return 0;
         }
         return $this->_recvint64();
@@ -981,21 +981,21 @@ class TokyoTyrant_RDB {
      */
     public function stat() {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
         $sbuf = pack("CC", 0xC8, 0x88);
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
         $code = $this->_recvcode();
 
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
 
@@ -1006,13 +1006,13 @@ class TokyoTyrant_RDB {
 
         $ssiz = $this->_recvint32();
         if ($ssiz < 0) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
 
         $sbuf = $this->_recv($ssiz);
         if (!$sbuf) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
 
@@ -1032,7 +1032,7 @@ class TokyoTyrant_RDB {
      */
     public function misc($name, $args = array(), $opts = 0) {
         if (!$this->sock) {
-            $this->ecode = EINVALID;
+            $this->ecode = self::EINVALID;
             return false;
         }
 
@@ -1045,7 +1045,7 @@ class TokyoTyrant_RDB {
         }
 
         if (!$this->_send($sbuf)) {
-            $this->ecode = ESEND;
+            $this->ecode = self::ESEND;
             return false;
         }
 
@@ -1053,11 +1053,11 @@ class TokyoTyrant_RDB {
         $rnum = $this->_recvint32();
 
         if ($code == -1) {
-            $this->ecode = ERECV;
+            $this->ecode = self::ERECV;
             return false;
         }
         if ($code != 0) {
-            $this->ecode = EMISC;
+            $this->ecode = self::EMISC;
             return false;
         }
 
@@ -1066,13 +1066,13 @@ class TokyoTyrant_RDB {
             $esiz = $this->_recvint32();
 
             if ($esiz < 0) {
-                $this->ecode = ERECV;
+                $this->ecode = self::ERECV;
                 return false;
             }
             $ebuf = $this->_recv($esiz);
 
             if (!$ebuf) {
-                $this->ecode = ERECV;
+                $this->ecode = self::ERECV;
                 return false;
             }
             $res[] = $this->_retstr($ebuf);
