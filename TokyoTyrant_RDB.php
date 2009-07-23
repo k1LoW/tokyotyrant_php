@@ -936,7 +936,13 @@ class TokyoTyrant_RDB {
             return 0;
         }
 
-        return $this->_recvint64();
+        $rv = $this->_recvint64();
+        if ($rv < 0){
+            $this->ecode = self::ERECV;
+            return 0;
+        }
+        return $rv;
+
     }
 
     /**
@@ -968,7 +974,13 @@ class TokyoTyrant_RDB {
             $this->ecode = self::EMISC;
             return 0;
         }
-        return $this->_recvint64();
+
+        $rv = $this->_recvint64();
+        if ($rv < 0){
+            $this->ecode = self::ERECV;
+            return 0;
+        }
+        return $rv;
 
     }
 
@@ -1000,7 +1012,7 @@ class TokyoTyrant_RDB {
         }
 
         if ($code != 0) {
-            $this->ecode = ENOREC;
+            $this->ecode = self::ENOREC;
             return false;
         }
 
@@ -1376,8 +1388,8 @@ class TokyoTyrant_RDB {
         if (!$rbuf) {
             return -1;
         } else {
-            $rbuf = unpack('c', $rbuf);
-            return $rbuf[1];
+            $res = unpack('c', $rbuf);
+            return $res[1];
         }
     }
 
@@ -1389,9 +1401,12 @@ class TokyoTyrant_RDB {
      * @return Integer
      */
     private function _recvint32() {
-        $result = '';
-        $res = $this->_recv(4);
-        $res = unpack('N', $res);
+        $rbuf = $this->_recv(4);
+        if (!$rbuf) {
+            return -1;
+        }
+        $num = unpack('N', $rbuf);
+        $res = unpack('l', pack('l', $num[1]));
         return $res[1];
     }
 
@@ -1404,12 +1419,14 @@ class TokyoTyrant_RDB {
      * @return Array
      */
     private function _recvint64() {
-        $result = '';
-        $res = $this->_recv(8);
-        $res = unpack('N*', $res);
+        $rbuf = $this->_recv(8);
+        if (!$rbuf) {
+            return -1;
+        }
+        list($high, $low) = array_values(unpack('N*', $rbuf));
         //return array($res[1], $res[2]);
-        $s = $res[1] . $res[2];
-        return (double) $s;
+        $s = $high . $low;
+        return (float) $s;
     }
 
     /**

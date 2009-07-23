@@ -38,6 +38,10 @@ class TokyoTyrant_RDBTBL extends TokyoTyrant_RDB{
     const ITLEXICAL = 0;
     // index type: decimal string
     const ITDECIMAL = 1;
+    // index type: token inverted index
+    const ITTOKEN = 2;
+    // index type: q-gram inverted index
+    const ITQGRAM = 3;
     // index type: optimize
     const ITOPT = 9998;
     // index type: void

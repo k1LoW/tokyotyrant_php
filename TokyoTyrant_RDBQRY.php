@@ -58,6 +58,14 @@ class TokyoTyrant_RDBQRY {
     const QCNUMBT = 13;
     // query condition: number is equal to at least one token in
     const QCNUMOREQ = 14;
+    // query condition: full-text search with the phrase of
+    const QCFTSPH = 15;
+    // query condition: full-text search with all tokens in
+    const QCFTSAND = 16;
+    // query condition: full-text search with at least one token in
+    const QCFTSOR = 17;
+    // query condition: full-text search with the compound expression of
+    const QCFTSEX = 18;
     // query condition: negation flag
     //const QCNEGATE = 1 << 24;
     // query condition: no index flag
