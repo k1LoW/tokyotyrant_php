@@ -78,16 +78,22 @@ class TokyoTyrant_RDBQRY {
     const QONUMASC = 2;
     // order type: number descending
     const QONUMDESC = 3;
-
+    // set operation type: union
+    const MSUNION = 0;
+    // set operation type: intersection
+    const MSISECT = 1;
+    // set operation type: difference
+    const MSDIFF = 2;
     protected $rdb = null;
     protected $args = array();
+    protected $hint = '';
 
     public function __construct($rdb){
         if (!is_a($rdb, 'TokyoTyrant_RDBTBL')) {
             return false;
         }
         $this->rdb = $rdb;
-        $this->args = array();
+        $this->args = array('hint');
     }
 
     /**
@@ -114,7 +120,7 @@ class TokyoTyrant_RDBQRY {
      * @param String $type
      * @return null
      */
-    public function setorder($name, $type){
+    public function setorder($name, $type = QOSTRASC){
         $this->args[] = "setorder" . "\0" . $name . "\0" . (string)$type;
         return null;
     }
@@ -141,8 +147,13 @@ class TokyoTyrant_RDBQRY {
      * @return Array
      */
     public function search(){
+        $this->hint = '';
         $rv = $this->rdb->misc("search", $this->args, TokyoTyrant_RDB::MONOULOG);
-        return ($rv) ? $rv : array();
+        if (!$rv) {
+            return array();
+        }
+        $rv = $this->_popmeta($rv);
+        return $rv;
     }
 
     /**
@@ -155,8 +166,13 @@ class TokyoTyrant_RDBQRY {
     public function searchout(){
         $args = $this->args;
         $args[] = "out";
+        $this->hint = "";
         $rv = $this->rdb->misc("search", $args, 0);
-        return ($rv) ? true : false;
+        if (!$rv) {
+            return false;
+        }
+        $rv = $this->_popmeta($rv);
+        return true;
     }
 
     /**
@@ -177,10 +193,12 @@ class TokyoTyrant_RDBQRY {
         } else {
             $args[] = "get";
         }
+        $this->hint = "";
         $rv = $this->rdb->misc("search", $args, TokyoTyrant_RDB::MONOULOG);
         if (!$rv) {
             return array();
         }
+        $rv = $this->_popmeta($rv);
         $size = count($rv);
         for ($i = 0; $i < $size; $i++) {
             $cols = array();
@@ -197,6 +215,51 @@ class TokyoTyrant_RDBQRY {
     }
 
     /**
+     * metasearch
+     *
+     * @param $
+     * @return
+     */
+    function metasearch($others, $type = MSUNION) {
+        $args = $this->args;
+        foreach ($others as $key => $other) {
+            if (!is_a($other, 'TokyoTyrant_RDBQRY')) {
+            } else {
+                array_push($other,'next');
+                foreach ($other->_args as $key2 => $arg) {
+                    array_push($args,$arg);
+                }
+            }
+        }
+        array_push($args, "mstype\0" . (string)$type);
+        $this->hint = '';
+        if (!$rv) {
+            return array();
+        }
+        $rv = $this->_popmeta($rv);
+        return $rv;
+    }
+
+    protected function _args() {
+        return $this->args;
+    }
+
+    private function  _popmeta($res) {
+        $i = strlen($res) - 1;
+        while ($i >= 0) {
+            $pkey = $res[$i];
+            if (preg_match('/^\0\0\[\[HINT\]\]\n/', $pkey)) {
+                $this->hint = preg_replace('/^\0\0\[\[HINT\]\]\n/', "");
+                array_pop($res);
+            } else {
+                break;
+            }
+            $i -= 1;
+        }
+        return $rv;
+    }
+
+    /**
      * searchcount
      *
      * Get the count of corresponding records.
@@ -206,8 +269,13 @@ class TokyoTyrant_RDBQRY {
     public function searchcount() {
         $args = $this->args;
         $args[] = "count";
+        $this->hint = "";
         $rv = $this->rdb->misc("search", $args, TokyoTyrant_RDB::MONOULOG);
-        return ($rv) ? (int)$rv[0] : 0;
+        if (!$rv) {
+            return 0;
+        }
+        $rv = $this->_popmeta($rv);
+        return count($rv) > 0 ? (int)$rv[0] : 0;
     }
 
   }

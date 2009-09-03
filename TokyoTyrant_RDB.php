@@ -911,6 +911,8 @@ class TokyoTyrant_RDB {
     /**
      * rnum
      *
+     * Get the number of records
+     *
      * @return Mixed
      */
     public function rnum () {
@@ -1195,7 +1197,7 @@ class TokyoTyrant_RDB {
      */
     public function is_empty(){
         $rnum = $this->rnum();
-        if (empty($rnum)) {
+        if ($rnum < 1) {
             return true;
         } else {
             return false;
@@ -1368,7 +1370,7 @@ class TokyoTyrant_RDB {
 
         $result = $this->_fullread($this->sock, (int) $len);
 
-        if ($result === false) {
+        if (empty($result)) {
             return false;
         }
 
